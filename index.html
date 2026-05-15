@@ -1,11 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy — SQL Editor Pro</title>
+    <title>SQL Editor Pro — Editor SQL nativo para iPhone</title>
+    <meta name="description" content="Aprende y practica SQL desde tu iPhone. Editor nativo en español con lecciones integradas, datasets temáticos y exportación a PDF profesional.">
+    <meta property="og:title" content="SQL Editor Pro — Editor SQL nativo para iPhone">
+    <meta property="og:description" content="Aprende y practica SQL desde tu iPhone. En español, sin configuraciones.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sqleditorpro.com">
+    <link rel="canonical" href="https://sqleditorpro.com">
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=DM+Sans:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
 
         * {
             margin: 0;
@@ -14,344 +21,1135 @@
         }
 
         :root {
-            --bg: #FAFAF8;
-            --text: #1A1A1A;
-            --text-secondary: #5C5C5C;
-            --accent: #2563EB;
-            --border: #E5E5E3;
-            --section-bg: #FFFFFF;
-            --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+            --bg: #0E1411;
+            --bg-elevated: #161D1A;
+            --bg-card: #1A2320;
+            --terminal-green: #4ADE80;
+            --terminal-green-dim: #22C55E;
+            --terminal-glow: rgba(74, 222, 128, 0.15);
+            --text: #E8EDE9;
+            --text-secondary: #9CA8A1;
+            --text-tertiary: #6B7670;
+            --border: #243029;
+            --border-strong: #2F3D34;
+            --accent: #FBBF24;
+            --serif: 'Fraunces', Georgia, serif;
+            --mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+            --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
+
+        html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: var(--sans);
             background-color: var(--bg);
             color: var(--text);
-            line-height: 1.7;
-            font-size: 15px;
+            line-height: 1.6;
+            font-size: 16px;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 720px;
+        /* Grid background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(74, 222, 128, 0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(74, 222, 128, 0.025) 1px, transparent 1px);
+            background-size: 48px 48px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1180px;
             margin: 0 auto;
-            padding: 60px 24px 80px;
+            padding: 0 32px;
         }
 
-        header {
-            margin-bottom: 48px;
-            padding-bottom: 32px;
+        /* ===== NAV ===== */
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 0;
             border-bottom: 1px solid var(--border);
+            margin-bottom: 80px;
         }
 
-        .app-badge {
+        .logo {
+            font-family: var(--mono);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--terminal-green);
+            border-radius: 50%;
+            box-shadow: 0 0 12px var(--terminal-glow);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .lang-switch {
+            display: flex;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 3px;
+            font-family: var(--mono);
+            font-size: 12px;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 5px 12px;
+            border-radius: 100px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: inherit;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .lang-btn.active {
+            background: var(--terminal-green);
+            color: var(--bg);
+        }
+
+        .nav-cta {
+            font-family: var(--mono);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text);
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid var(--border-strong);
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .nav-cta:hover {
+            border-color: var(--terminal-green);
+            color: var(--terminal-green);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 80px;
+            align-items: center;
+            margin-bottom: 140px;
+        }
+
+        .hero-tag {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--accent);
-            letter-spacing: 0.03em;
-            text-transform: uppercase;
-            margin-bottom: 16px;
-        }
-
-        h1 {
-            font-family: 'Source Serif 4', Georgia, serif;
-            font-size: 36px;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 12px;
-            color: var(--text);
-        }
-
-        .effective-date {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        h2 {
-            font-family: 'Source Serif 4', Georgia, serif;
-            font-size: 22px;
-            font-weight: 600;
-            margin-top: 40px;
-            margin-bottom: 12px;
-            color: var(--text);
-        }
-
-        p {
-            margin-bottom: 16px;
-            color: var(--text);
-        }
-
-        .section {
-            background: var(--section-bg);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 28px 28px 12px;
-            margin-top: 24px;
-            box-shadow: var(--shadow);
-        }
-
-        .section h2 {
-            margin-top: 0;
-            font-size: 20px;
-        }
-
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 16px 0;
-            font-size: 14px;
-        }
-
-        .data-table th {
-            text-align: left;
-            font-weight: 500;
-            color: var(--text-secondary);
-            padding: 10px 12px;
-            border-bottom: 2px solid var(--border);
+            font-family: var(--mono);
             font-size: 12px;
+            font-weight: 500;
+            color: var(--terminal-green);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 28px;
+            padding: 6px 12px;
+            background: var(--terminal-glow);
+            border-radius: 100px;
+            border: 1px solid var(--border);
+        }
+
+        .hero h1 {
+            font-family: var(--serif);
+            font-size: clamp(44px, 6vw, 76px);
+            font-weight: 500;
+            line-height: 1.02;
+            letter-spacing: -0.03em;
+            margin-bottom: 32px;
+            color: var(--text);
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--terminal-green);
+        }
+
+        .hero-sub {
+            font-size: 19px;
+            line-height: 1.55;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            max-width: 520px;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .app-store-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--text);
+            color: var(--bg);
+            padding: 14px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: 1px solid var(--text);
+        }
+
+        .app-store-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(74, 222, 128, 0.1);
+        }
+
+        .app-store-btn svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .app-store-btn-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+
+        .app-store-btn-text small {
+            font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            opacity: 0.7;
         }
 
-        .data-table td {
+        .app-store-btn-text strong {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .secondary-link {
+            font-family: var(--mono);
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .secondary-link:hover {
+            color: var(--terminal-green);
+        }
+
+        /* ===== HERO MOCKUP ===== */
+        .hero-mockup {
+            position: relative;
+            justify-self: center;
+        }
+
+        .phone-frame {
+            width: 320px;
+            height: 640px;
+            background: var(--bg-elevated);
+            border-radius: 44px;
+            border: 1px solid var(--border-strong);
             padding: 12px;
-            border-bottom: 1px solid var(--border);
-            vertical-align: top;
+            position: relative;
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.4),
+                0 0 0 1px var(--border);
         }
 
-        .data-table tr:last-child td {
-            border-bottom: none;
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            border-radius: 32px;
+            overflow: hidden;
+            position: relative;
+            padding: 40px 20px 20px;
         }
 
-        .badge {
-            display: inline-block;
-            padding: 2px 10px;
+        .phone-screen::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110px;
+            height: 28px;
+            background: var(--bg-elevated);
             border-radius: 100px;
-            font-size: 12px;
-            font-weight: 500;
         }
 
-        .badge--no {
-            background: #ECFDF5;
-            color: #065F46;
-        }
-
-        .badge--yes {
-            background: #FEF3C7;
-            color: #92400E;
-        }
-
-        .badge--anonymous {
-            background: #EFF6FF;
-            color: #1E40AF;
-        }
-
-        ul {
-            padding-left: 20px;
-            margin-bottom: 16px;
-        }
-
-        li {
+        .mock-header {
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
             margin-bottom: 8px;
         }
 
-        .contact-box {
-            background: var(--section-bg);
+        .mock-title {
+            font-family: var(--serif);
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 18px;
+        }
+
+        .mock-editor {
+            background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 10px;
-            padding: 24px 28px;
-            margin-top: 32px;
-            box-shadow: var(--shadow);
+            padding: 14px;
+            font-family: var(--mono);
+            font-size: 11px;
+            line-height: 1.7;
         }
 
-        .contact-box h2 {
-            margin-top: 0;
-            font-size: 18px;
+        .mock-line { display: block; }
+        .kw { color: #C084FC; }
+        .fn { color: var(--terminal-green); }
+        .str { color: var(--accent); }
+        .num { color: #60A5FA; }
+        .com { color: var(--text-tertiary); }
+        .indent { padding-left: 14px; }
+
+        .mock-result {
+            margin-top: 14px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px;
         }
 
-        .contact-box a {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 500;
+        .mock-result-header {
+            font-family: var(--mono);
+            font-size: 9px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
         }
 
-        .contact-box a:hover {
-            text-decoration: underline;
-        }
+        .mock-result-header span:last-child { color: var(--terminal-green); }
 
-        footer {
-            margin-top: 48px;
-            padding-top: 24px;
-            border-top: 1px solid var(--border);
-            font-size: 13px;
+        .mock-table {
+            font-family: var(--mono);
+            font-size: 10px;
             color: var(--text-secondary);
-            text-align: center;
         }
 
-        @media (max-width: 600px) {
-            .container {
-                padding: 40px 18px 60px;
-            }
+        .mock-row {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 0.6fr;
+            padding: 4px 0;
+            border-bottom: 1px solid var(--border);
+        }
 
-            h1 {
-                font-size: 28px;
-            }
+        .mock-row:last-child { border-bottom: none; }
+        .mock-row.head { color: var(--text-tertiary); font-size: 9px; text-transform: uppercase; }
 
-            .section {
-                padding: 20px 18px 8px;
-            }
+        /* Floating annotation */
+        .float-tag {
+            position: absolute;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-strong);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
 
-            .data-table {
-                font-size: 13px;
-            }
+        .float-tag.t1 {
+            top: 60px;
+            right: -40px;
+            color: var(--terminal-green);
+        }
 
-            .data-table th,
-            .data-table td {
-                padding: 8px 6px;
+        .float-tag.t2 {
+            bottom: 80px;
+            left: -60px;
+        }
+
+        /* ===== SECTION HEADERS ===== */
+        .section-label {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--terminal-green);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-label::before {
+            content: '';
+            width: 24px;
+            height: 1px;
+            background: var(--terminal-green);
+        }
+
+        .section-title {
+            font-family: var(--serif);
+            font-size: clamp(36px, 4vw, 52px);
+            font-weight: 500;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+            max-width: 700px;
+        }
+
+        .section-title em {
+            font-style: italic;
+            color: var(--terminal-green);
+            font-weight: 400;
+        }
+
+        section { margin-bottom: 140px; }
+
+        /* ===== FEATURES ===== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-top: 60px;
+        }
+
+        .feature {
+            background: var(--bg);
+            padding: 36px 32px;
+            position: relative;
+            transition: background 0.3s;
+        }
+
+        .feature:hover {
+            background: var(--bg-elevated);
+        }
+
+        .feature-num {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-bottom: 24px;
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--terminal-glow);
+            border: 1px solid var(--border-strong);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: var(--terminal-green);
+        }
+
+        .feature-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .feature h3 {
+            font-family: var(--serif);
+            font-size: 22px;
+            font-weight: 600;
+            line-height: 1.25;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        .feature p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ===== SCREENSHOTS ===== */
+        .screenshots {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 60px;
+        }
+
+        .screenshot {
+            aspect-ratio: 9 / 19.5;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-tertiary);
+            font-family: var(--mono);
+            font-size: 12px;
+            background-image:
+                linear-gradient(rgba(74, 222, 128, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(74, 222, 128, 0.04) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .screenshot::after {
+            content: 'screenshot.png';
+            opacity: 0.5;
+        }
+
+        /* ===== AUDIENCE ===== */
+        .audience-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 60px;
+        }
+
+        .audience-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 36px;
+            transition: all 0.3s;
+        }
+
+        .audience-card:hover {
+            border-color: var(--border-strong);
+            transform: translateY(-2px);
+        }
+
+        .audience-tag {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--terminal-green);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 16px;
+        }
+
+        .audience-card h3 {
+            font-family: var(--serif);
+            font-size: 26px;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+
+        .audience-card p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* ===== CTA BANNER ===== */
+        .cta-banner {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 64px 48px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 0%, var(--terminal-glow), transparent 60%);
+            pointer-events: none;
+        }
+
+        .cta-banner > * { position: relative; }
+
+        .cta-banner h2 {
+            font-family: var(--serif);
+            font-size: clamp(32px, 4vw, 44px);
+            font-weight: 500;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+        }
+
+        .cta-banner h2 em {
+            font-style: italic;
+            color: var(--terminal-green);
+        }
+
+        .cta-banner p {
+            color: var(--text-secondary);
+            font-size: 17px;
+            margin-bottom: 32px;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 64px 0 40px;
+            margin-top: 100px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+
+        .footer-brand .logo { margin-bottom: 16px; }
+
+        .footer-brand p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            max-width: 280px;
+            line-height: 1.6;
+        }
+
+        .footer-col h4 {
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 16px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-col a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .footer-col a:hover {
+            color: var(--terminal-green);
+        }
+
+        .socials {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-link {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            border-color: var(--terminal-green);
+            color: var(--terminal-green);
+        }
+
+        .social-link svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .footer-bottom {
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .footer-bottom-right {
+            display: flex;
+            gap: 24px;
+        }
+
+        /* ===== HIDE CONTENT BY LANG ===== */
+        [data-lang="en"] { display: none; }
+        body.en [data-lang="es"] { display: none; }
+        body.en [data-lang="en"] { display: inline; }
+        body.en .feature [data-lang="en"],
+        body.en .audience-card [data-lang="en"],
+        body.en .footer-brand [data-lang="en"] { display: block; }
+        body.en p[data-lang="en"] { display: block; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .wrapper { padding: 0 20px; }
+            nav { margin-bottom: 48px; }
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 48px;
+                margin-bottom: 80px;
             }
+            .features-grid { grid-template-columns: 1fr; }
+            .screenshots { grid-template-columns: 1fr; max-width: 320px; margin: 60px auto 0; }
+            .audience-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+            section { margin-bottom: 80px; }
+            .cta-banner { padding: 48px 24px; }
+            .float-tag { display: none; }
+            .nav-cta { display: none; }
+        }
+
+        @media (max-width: 500px) {
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="app-badge">SQL Editor Pro</div>
-            <h1>Privacy Policy</h1>
-            <p class="effective-date">Effective date: April 15, 2026</p>
-        </header>
+    <div class="wrapper">
 
-        <p>
-            SQL Editor Pro ("we", "our", or "the app") is developed by Miguel Torres, an independent developer based in Mexico. We are committed to protecting your privacy. This policy explains what data is collected when you use SQL Editor Pro and how that data is handled.
-        </p>
+        <!-- NAV -->
+        <nav>
+            <div class="logo">
+                <span class="logo-dot"></span>
+                sqleditorpro
+            </div>
+            <div class="nav-right">
+                <div class="lang-switch" role="group" aria-label="Language switcher">
+                    <button class="lang-btn active" data-set-lang="es">ES</button>
+                    <button class="lang-btn" data-set-lang="en">EN</button>
+                </div>
+                <a href="#download" class="nav-cta">
+                    <span data-lang="es">Descargar</span><span data-lang="en">Download</span>
+                </a>
+            </div>
+        </nav>
 
-        <h2>Summary</h2>
-        <p>
-            SQL Editor Pro does not collect, store, or transmit any personal information. We do not require account creation, login, or any form of registration. The app uses Firebase Analytics to collect anonymous usage data to help us improve the experience.
-        </p>
+        <!-- HERO -->
+        <section class="hero">
+            <div>
+                <div class="hero-tag">
+                    <span>●</span>
+                    <span data-lang="es">Disponible en App Store</span>
+                    <span data-lang="en">Now on the App Store</span>
+                </div>
 
-        <div class="section">
-            <h2>Data We Collect</h2>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Data Type</th>
-                        <th>Collected?</th>
-                        <th>Details</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Name, email, or personal info</td>
-                        <td><span class="badge badge--no">No</span></td>
-                        <td>We do not collect any personal identifiers</td>
-                    </tr>
-                    <tr>
-                        <td>Location data</td>
-                        <td><span class="badge badge--no">No</span></td>
-                        <td>We do not access your location</td>
-                    </tr>
-                    <tr>
-                        <td>Analytics &amp; usage data</td>
-                        <td><span class="badge badge--anonymous">Anonymous</span></td>
-                        <td>Collected via Firebase Analytics (see below)</td>
-                    </tr>
-                    <tr>
-                        <td>Purchase data</td>
-                        <td><span class="badge badge--no">No</span></td>
-                        <td>Handled entirely by Apple via StoreKit</td>
-                    </tr>
-                    <tr>
-                        <td>Advertising or tracking IDs</td>
-                        <td><span class="badge badge--no">No</span></td>
-                        <td>We do not use advertising SDKs or IDFA</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+                <h1>
+                    <span data-lang="es">SQL en tu iPhone. <em>Sin excusas.</em></span>
+                    <span data-lang="en">SQL on your iPhone. <em>No excuses.</em></span>
+                </h1>
 
-        <div class="section">
-            <h2>Firebase Analytics</h2>
-            <p>
-                We use Google Firebase Analytics to understand how users interact with the app. This helps us identify which features are most used and improve the overall experience. Firebase Analytics may collect the following anonymous data:
-            </p>
-            <ul>
-                <li>App usage patterns (screens viewed, features used)</li>
-                <li>Session duration and frequency</li>
-                <li>Device type, operating system version, and language settings</li>
-                <li>Crash and performance data</li>
-                <li>Country-level location (derived from IP address, which is not stored)</li>
-            </ul>
-            <p>
-                This data is anonymous, aggregated, and cannot be used to identify you personally. Firebase Analytics does not collect your name, email, phone number, or any other personally identifiable information.
-            </p>
-            <p>
-                For more information on how Google handles this data, please review <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: none; font-weight: 500;">Google's Privacy Policy</a> and <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: none; font-weight: 500;">Firebase's Privacy documentation</a>.
-            </p>
-        </div>
+                <p class="hero-sub">
+                    <span data-lang="es">El primer editor SQL nativo de iOS con lecciones, datasets temáticos y exportación a PDF profesional — todo en español, sin configurar servidores ni instalar nada.</span>
+                    <span data-lang="en">The first native iOS SQL editor with built-in lessons, themed datasets, and professional PDF export — no servers, no setup, no friction.</span>
+                </p>
 
-        <div class="section">
-            <h2>In-App Purchases</h2>
-            <p>
-                SQL Editor Pro offers in-app purchases through Apple's StoreKit framework. All purchase transactions, billing information, and payment processing are handled entirely by Apple. We do not have access to your payment details, credit card information, or Apple ID.
-            </p>
-        </div>
+                <div class="hero-actions">
+                    <a href="#" class="app-store-btn" id="appStoreBtn">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                        </svg>
+                        <div class="app-store-btn-text">
+                            <small data-lang="es">Descarga en</small><small data-lang="en">Download on the</small>
+                            <strong>App Store</strong>
+                        </div>
+                    </a>
+                    <a href="#features" class="secondary-link">
+                        <span data-lang="es">Ver características →</span>
+                        <span data-lang="en">See features →</span>
+                    </a>
+                </div>
+            </div>
 
-        <div class="section">
-            <h2>Data Storage &amp; Security</h2>
-            <p>
-                All your learning progress and app data is stored locally on your device. We do not operate servers that store your personal data. Your data stays on your device and is not transmitted to us or any third party, with the exception of the anonymous analytics data described above.
-            </p>
-        </div>
+            <div class="hero-mockup">
+                <div class="phone-frame">
+                    <div class="phone-screen">
+                        <div class="mock-header">EDITOR</div>
+                        <div class="mock-title">Top canciones 2024</div>
+                        <div class="mock-editor">
+                            <span class="mock-line"><span class="com">-- Top 5 artistas</span></span>
+                            <span class="mock-line"><span class="kw">SELECT</span> artista,</span>
+                            <span class="mock-line indent"><span class="fn">COUNT</span>(*) <span class="kw">AS</span> hits</span>
+                            <span class="mock-line"><span class="kw">FROM</span> canciones</span>
+                            <span class="mock-line"><span class="kw">WHERE</span> año = <span class="num">2024</span></span>
+                            <span class="mock-line"><span class="kw">GROUP BY</span> artista</span>
+                            <span class="mock-line"><span class="kw">ORDER BY</span> hits <span class="kw">DESC</span></span>
+                            <span class="mock-line"><span class="kw">LIMIT</span> <span class="num">5</span>;</span>
+                        </div>
+                        <div class="mock-result">
+                            <div class="mock-result-header">
+                                <span>Resultado</span>
+                                <span>✓ 5 filas</span>
+                            </div>
+                            <div class="mock-table">
+                                <div class="mock-row head">
+                                    <span>artista</span><span>hits</span><span></span>
+                                </div>
+                                <div class="mock-row">
+                                    <span>Bad Bunny</span><span>12</span><span></span>
+                                </div>
+                                <div class="mock-row">
+                                    <span>Karol G</span><span>9</span><span></span>
+                                </div>
+                                <div class="mock-row">
+                                    <span>Peso Pluma</span><span>7</span><span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="float-tag t1">SELECT *</div>
+                <div class="float-tag t2">→ export.pdf</div>
+            </div>
+        </section>
 
-        <div class="section">
-            <h2>Children's Privacy</h2>
-            <p>
-                SQL Editor Pro does not knowingly collect personal information from children under the age of 13 (or equivalent minimum age in the relevant jurisdiction). Since we do not collect personal data from any user, the app is safe for use by individuals of all ages.
-            </p>
-        </div>
+        <!-- FEATURES -->
+        <section id="features">
+            <div class="section-label">
+                <span data-lang="es">Características</span>
+                <span data-lang="en">Features</span>
+            </div>
+            <h2 class="section-title">
+                <span data-lang="es">Todo lo que necesitas para <em>aprender y practicar</em> SQL.</span>
+                <span data-lang="en">Everything you need to <em>learn and practice</em> SQL.</span>
+            </h2>
 
-        <div class="section">
-            <h2>Third-Party Services</h2>
-            <p>
-                The app integrates the following third-party services:
-            </p>
-            <ul>
-                <li><strong>Firebase Analytics (Google)</strong> — anonymous usage analytics</li>
-                <li><strong>Apple StoreKit</strong> — in-app purchase processing</li>
-            </ul>
-            <p>
-                Each third-party service operates under its own privacy policy. We encourage you to review their respective policies.
-            </p>
-        </div>
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-num">01</div>
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z"/><path d="M3 10h18"/></svg>
+                    </div>
+                    <h3>
+                        <span data-lang="es">Nativa para iOS</span>
+                        <span data-lang="en">Truly native iOS</span>
+                    </h3>
+                    <p>
+                        <span data-lang="es">Diseñada desde cero para iPhone. Rápida, fluida y con todos los detalles de iOS.</span>
+                        <span data-lang="en">Built from scratch for iPhone. Fast, fluid, and every iOS detail done right.</span>
+                    </p>
+                </div>
 
-        <div class="section">
-            <h2>Your Rights</h2>
-            <p>
-                Since we do not collect or store personal information, there is no personal data to access, modify, or delete. If you wish to reset your anonymous analytics data, you can reinstall the app or disable analytics data sharing in your device settings under Settings → Privacy → Analytics.
-            </p>
-        </div>
+                <div class="feature">
+                    <div class="feature-num">02</div>
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    </div>
+                    <h3>
+                        <span data-lang="es">Cero fricción</span>
+                        <span data-lang="en">Zero friction</span>
+                    </h3>
+                    <p>
+                        <span data-lang="es">Sin Docker, sin instalar servidores, sin configuraciones. Abres la app y escribes queries.</span>
+                        <span data-lang="en">No Docker, no servers, no setup. Open the app and start querying immediately.</span>
+                    </p>
+                </div>
 
-        <div class="section">
-            <h2>Changes to This Policy</h2>
-            <p>
-                We may update this Privacy Policy from time to time. Any changes will be reflected on this page with an updated effective date. Continued use of the app after any changes constitutes your acceptance of the revised policy.
-            </p>
-        </div>
+                <div class="feature">
+                    <div class="feature-num">03</div>
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>
+                    </div>
+                    <h3>
+                        <span data-lang="es">En español</span>
+                        <span data-lang="en">Spanish-first</span>
+                    </h3>
+                    <p>
+                        <span data-lang="es">Lecciones, ejercicios y UI completamente en español. Pensada para LATAM y España.</span>
+                        <span data-lang="en">Lessons, exercises, and UI fully in Spanish. Built for LATAM and Spain first.</span>
+                    </p>
+                </div>
 
-        <div class="contact-box">
-            <h2>Contact Us</h2>
-            <p>
-                If you have any questions or concerns about this Privacy Policy, please contact us at:
-                <br><a href="mailto:jose.miguel.torres@icloud.com">jose.miguel.torres@icloud.com</a>
-            </p>
-        </div>
+                <div class="feature">
+                    <div class="feature-num">04</div>
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 14l2 2 4-4"/></svg>
+                    </div>
+                    <h3>
+                        <span data-lang="es">Exporta a PDF</span>
+                        <span data-lang="en">Export to PDF</span>
+                    </h3>
+                    <p>
+                        <span data-lang="es">Genera documentos con diseño profesional. Perfecto para portafolio, clase o trabajo.</span>
+                        <span data-lang="en">Generate professionally designed documents. Perfect for portfolio, class, or work.</span>
+                    </p>
+                </div>
 
+                <div class="feature">
+                    <div class="feature-num">05</div>
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+                    </div>
+                    <h3>
+                        <span data-lang="es">Currículo integrado</span>
+                        <span data-lang="en">Built-in curriculum</span>
+                    </h3>
+                    <p>
+                        <span data-lang="es">Lecciones progresivas con datasets temáticos: misiones espaciales, películas, Olimpiadas y más.</span>
+                        <span data-lang="en">Progressive lessons with themed datasets: space missions, movies, Olympics, and more.</span>
+                    </p>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-num">06</div>
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    </div>
+                    <h3>
+                        <span data-lang="es">Precio justo</span>
+                        <span data-lang="en">Fair pricing</span>
+                    </h3>
+                    <p>
+                        <span data-lang="es">Sin suscripciones abusivas. Precio accesible diseñado para el mercado latinoamericano.</span>
+                        <span data-lang="en">No predatory subscriptions. Accessible pricing built for Latin American markets.</span>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREENSHOTS -->
+        <section>
+            <div class="section-label">
+                <span data-lang="es">La app</span>
+                <span data-lang="en">The app</span>
+            </div>
+            <h2 class="section-title">
+                <span data-lang="es">Mira cómo se siente <em>escribir SQL</em> en iPhone.</span>
+                <span data-lang="en">See what <em>writing SQL</em> on iPhone looks like.</span>
+            </h2>
+
+            <div class="screenshots">
+                <div class="screenshot"></div>
+                <div class="screenshot"></div>
+                <div class="screenshot"></div>
+            </div>
+        </section>
+
+        <!-- AUDIENCE -->
+        <section>
+            <div class="section-label">
+                <span data-lang="es">Para quién</span>
+                <span data-lang="en">Who it's for</span>
+            </div>
+            <h2 class="section-title">
+                <span data-lang="es">Hecha para los que <em>aprenden</em> y los que <em>ya saben</em>.</span>
+                <span data-lang="en">Built for those <em>learning</em> and those who <em>already know</em>.</span>
+            </h2>
+
+            <div class="audience-grid">
+                <div class="audience-card">
+                    <div class="audience-tag">
+                        <span data-lang="es">Estudiante</span>
+                        <span data-lang="en">Student</span>
+                    </div>
+                    <h3>
+                        <span data-lang="es">Si estás empezando</span>
+                        <span data-lang="en">If you're starting out</span>
+                    </h3>
+                    <p>
+                        <span data-lang="es">Universitario, bootcamp o autodidacta. Practica SQL sin tener que montar un servidor. Lecciones guiadas, ejercicios reales y resultados al instante.</span>
+                        <span data-lang="en">University, bootcamp, or self-taught. Practice SQL without spinning up a server. Guided lessons, real exercises, instant results.</span>
+                    </p>
+                </div>
+
+                <div class="audience-card">
+                    <div class="audience-tag">
+                        <span data-lang="es">Desarrollador</span>
+                        <span data-lang="en">Developer</span>
+                    </div>
+                    <h3>
+                        <span data-lang="es">Si ya sabes</span>
+                        <span data-lang="en">If you already know</span>
+                    </h3>
+                    <p>
+                        <span data-lang="es">Prueba queries sobre la marcha, documenta con PDFs profesionales o repasa sintaxis desde el celular. Velocidad sin estorbo.</span>
+                        <span data-lang="en">Run queries on the go, document with professional PDFs, or review syntax from your phone. Speed without the bloat.</span>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section id="download">
+            <div class="cta-banner">
+                <h2>
+                    <span data-lang="es">Empieza a <em>escribir SQL</em> hoy.</span>
+                    <span data-lang="en">Start <em>writing SQL</em> today.</span>
+                </h2>
+                <p>
+                    <span data-lang="es">Descarga SQL Editor Pro gratis en la App Store. Sin registro, sin fricción.</span>
+                    <span data-lang="en">Download SQL Editor Pro for free on the App Store. No signup, no friction.</span>
+                </p>
+                <a href="#" class="app-store-btn">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                    </svg>
+                    <div class="app-store-btn-text">
+                        <small data-lang="es">Descarga en</small><small data-lang="en">Download on the</small>
+                        <strong>App Store</strong>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
         <footer>
-            &copy; 2026 José Miguel Torres Chávez Nava. All rights reserved.
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <span class="logo-dot"></span>
+                        sqleditorpro
+                    </div>
+                    <p>
+                        <span data-lang="es">Editor SQL nativo para iPhone. Aprende y practica en español, sin fricción.</span>
+                        <span data-lang="en">Native SQL editor for iPhone. Learn and practice in Spanish, without friction.</span>
+                    </p>
+                    <div class="socials" style="margin-top: 20px;">
+                        <a href="#" class="social-link" aria-label="TikTok" title="@sqleditorpro">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005.8 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1.84-.1z"/></svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Instagram" title="@sqleditorpro">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="X/Twitter" title="@sqleditorpro">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="YouTube" title="@sqleditorpro">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 00.5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 002.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 002.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.6 15.6V8.4l6.2 3.6z"/></svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="LinkedIn" title="@sqleditorpro">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.95v5.66H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.61 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.13 2.06 2.06 0 010 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>
+                        <span data-lang="es">Producto</span>
+                        <span data-lang="en">Product</span>
+                    </h4>
+                    <ul>
+                        <li><a href="#features"><span data-lang="es">Características</span><span data-lang="en">Features</span></a></li>
+                        <li><a href="#download"><span data-lang="es">Descargar</span><span data-lang="en">Download</span></a></li>
+                        <li><a href="#"><span data-lang="es">Novedades</span><span data-lang="en">What's new</span></a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>
+                        <span data-lang="es">Soporte</span>
+                        <span data-lang="en">Support</span>
+                    </h4>
+                    <ul>
+                        <li><a href="mailto:jose.miguel.torres@icloud.com"><span data-lang="es">Contacto</span><span data-lang="en">Contact</span></a></li>
+                        <li><a href="#"><span data-lang="es">Preguntas frecuentes</span><span data-lang="en">FAQ</span></a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>
+                        <span data-lang="es">Legal</span>
+                        <span data-lang="en">Legal</span>
+                    </h4>
+                    <ul>
+                        <li><a href="/privacy.html"><span data-lang="es">Privacidad</span><span data-lang="en">Privacy</span></a></li>
+                        <li><a href="/terms.html"><span data-lang="es">Términos</span><span data-lang="en">Terms</span></a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div>© 2026 José Miguel Torres Chávez Nava</div>
+                <div class="footer-bottom-right">
+                    <span>v1.1</span>
+                    <span data-lang="es">Hecho en México 🇲🇽</span>
+                    <span data-lang="en">Made in Mexico 🇲🇽</span>
+                </div>
+            </div>
         </footer>
     </div>
+
+    <script>
+        const langButtons = document.querySelectorAll('.lang-btn');
+        const body = document.body;
+
+        function setLanguage(lang) {
+            if (lang === 'en') {
+                body.classList.add('en');
+                document.documentElement.lang = 'en';
+            } else {
+                body.classList.remove('en');
+                document.documentElement.lang = 'es';
+            }
+            langButtons.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.setLang === lang);
+            });
+            try { localStorage.setItem('sqlep_lang', lang); } catch(e) {}
+        }
+
+        langButtons.forEach(btn => {
+            btn.addEventListener('click', () => setLanguage(btn.dataset.setLang));
+        });
+
+        // Restore language preference
+        try {
+            const saved = localStorage.getItem('sqlep_lang');
+            if (saved === 'en') setLanguage('en');
+        } catch(e) {}
+    </script>
 </body>
 </html>
